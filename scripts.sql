@@ -58,7 +58,10 @@ CREATE TABLE noticia (
    portal_id INT FOREIGN KEY REFERENCES portales_noticia(id),
    tematica_id INT FOREIGN KEY REFERENCES tematica_noticias(id),
    autor NVARCHAR(100),
-    url_original nvarchar(max)
+    url_original nvarchar(max),
+    cont_02 NVARCHAR(MAX),
+    cont_05 NVARCHAR(MAX),
+    cont_08 NVARCHAR(MAX)
 );
 GO
 
@@ -190,7 +193,8 @@ SELECT
     interaccion_noticia_usuario.fecha_leido,
     interaccion_noticia_usuario.utilidad,
     interaccion_noticia_usuario.resumen_claro,
-    config_usuarios.nivel_resumen
+    config_usuarios.nivel_resumen,
+    iif(config_usuarios.nivel_resumen = 0.2, noticia.cont_02, iif(config_usuarios.nivel_resumen = 0.5, noticia.cont_05, noticia.cont_08))
 FROM noticia
 INNER JOIN tematica_noticias
     ON noticia.tematica_id = tematica_noticias.id
